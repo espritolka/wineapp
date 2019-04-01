@@ -53,3 +53,19 @@ app.route('/api/wines/:id')
     .delete(function(req,res){
         res.send("i'm delete");
     })    
+app.route('/api/reiting')
+    .get(function(req,res){
+        res.send("Top");
+    })
+    .post(function(req,res){
+    var idWine= req.body.wine_id;
+    var idUser= req.body.user_id;
+    var num = req.body.num;    
+        res.send('Вино: ${idWine} - Пользователь: ${idUser} - ${num}');
+    })
+    .put(function(req,res){
+        res.send("i'm put");
+    })
+    .delete(function(req,res){
+        res.send("i'm delete");
+    })       
