@@ -5,59 +5,49 @@ const LocalStrategy = require('passport-local').Strategy
 const authenticationMiddleware = require('./middleware')
 
 // Generate Password
-const saltRounds = 10
-const myPlaintextPassword = 'test-password'
-const salt = bcrypt.genSaltSync(saltRounds)
-const passwordHash = bcrypt.hashSync(myPlaintextPassword, salt)
+//const saltRounds = 10
 
-const user = {
-  username: 'test-user',
-  passwordHash,
-  id: 1
-}
+//const salt = bcrypt.genSaltSync(saltRounds)
+//const passwordHash = bcrypt.hashSync(myPlaintextPassword, salt)
+var User = require('../users/user')
 
-function findUser (username, callback) {
-  if (username === user.username) {
-    return callback(null, user)
-  }
-  return callback(null)
-}
+// function findUser (username, callback) {
+//   if (username === User.username) {
+//     return callback(null, user)
+//   }
+//   return callback(null)
+// }
 
-passport.serializeUser(function (user, cb) {
-  cb(null, user.username)
-})
-
-passport.deserializeUser(function (username, cb) {
-  findUser(username, cb)
-})
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+  });
+  
+passport.deserializeUser(function(id, done) {
+    User.getUserById(id, function(err, user) {
+      done(err, user);
+    });
+  });
+ 
 
 function initPassport () {
-  passport.use(new LocalStrategy(
-    (username, password, done) => {
-      findUser(username, (err, user) => {
-        if (err) {
-          return done(err)
+    passport.use(new LocalStrategy(
+        function(username, password, done) {
+          User.getUserByUsername(username, function(err, user){
+            if(err) throw err;
+            if(!user){
+              return done(null, false, {message: 'Unknown User'});
+            }
+            User.comparePassword(password, user.password, function(err, isMatch){
+              if(err) throw err;
+               if(isMatch){
+                 return done(null, user);
+               } else {
+                 return done(null, false, {message: 'Invalid password'});
+               }
+           });
+         });
         }
-
-        // User not found
-        if (!user) {
-          console.log('User not found')
-          return done(null, false)
-        }
-
-        // Always use hashed passwords and fixed time comparison
-        bcrypt.compare(password, user.passwordHash, (err, isValid) => {
-          if (err) {
-            return done(err)
-          }
-          if (!isValid) {
-            return done(null, false)
-          }
-          return done(null, user)
-        })
-      })
-    }
-  ))
+      ));
 
   passport.authenticationMiddleware = authenticationMiddleware
 }
