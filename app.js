@@ -12,6 +12,7 @@ const RedisStore = require('connect-redis')(session)
 const jsonParser = express.json();
 const fs = require('fs');
 var User = require('./users/user')
+var Wine = require('./wines/wine')
 
 var port = 3000;
 app.listen(port);
@@ -60,9 +61,6 @@ app.route('/api/users/:id',  passport.authenticationMiddleware())
         var id = req.params.id
         res.send(id);
     })
-    .post(function(req,res){
-        res.send("i'm post");
-    })
     .put(function(req,res){
         res.send("i'm put");
     })
@@ -72,16 +70,31 @@ app.route('/api/users/:id',  passport.authenticationMiddleware())
 app.get('/api/wines', function(req, res){
     res.send("WinesList")
 });
+app.post('/api/wines', function(req, res){
+    var newWine = new Wine({
+        name: req.body.name,
+        rating: {'1': 0, '2': 0 , '3': 0, '4': 0, '5': 0}
+      });
+  
+      Wine.createWine(newWine, function(err, wine){
+        if(err) throw err;
+        res.send(wine).end()
+      });
+});
 app.route('/api/wines/:id')
     .get(function(req,res){
         var id = req.params.id
         res.send(id);
     })
-    .post(function(req,res){
-        res.send("i'm post");
-    })
     .put(function(req,res){
-        res.send("i'm put");
+       var idWine = req.params.id
+       var idUser = req.body.user
+       var idRating = req.body.num
+
+        Wine.addRatingWine(idWine, idRating, idUser, function(err, wine){
+            if(err) throw err;
+            res.send(wine).end()
+          });
     })
     .delete(function(req,res){
         res.send("i'm delete");
