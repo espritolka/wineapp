@@ -32,52 +32,63 @@ module.exports.addRatingWine = function (idWine, idRating, idUser, callback) {
             case '1':
                 Wine.updateOne({ _id: idWine }, {
                     "$set": { "rating.1": valRating }
-                }, { new: true }, (err, doc) => {
-                    if (err) {
-                        console.log("error " + err)
-                    }
-                    console.log(doc);
-                });
+                }, { new: true }, callback
+                //( err, doc) => {
+                //     if (err) {
+                //         console.log("error " + err)
+                //     }
+                //     console.log(doc);
+                // }
+                );
                 break;
             case '2':
                 Wine.updateOne({ _id: idWine }, {
                     "$set": { "rating.2": valRating }
-                }, { new: true }, (err, doc) => {
-                    if (err) {
-                        console.log("error " + err)
-                    }
-                    console.log(doc);
-                });
+                }, { new: true }, callback
+                //( err, doc) => {
+                //     if (err) {
+                //         console.log("error " + err)
+                //     }
+                //     console.log(doc);
+                // }
+                );
                 break;
             case '3':
                 Wine.updateOne({ _id: idWine }, {
                     "$set": { "rating.3": valRating }
-                }, { new: true }, (err, doc) => {
-                    if (err) {
-                        console.log("error " + err)
-                    }
-                    console.log(doc);
-                });
+                }, { new: true }, callback
+                //( err, doc) => {
+                //     if (err) {
+                //         console.log("error " + err)
+                //     }
+                //     console.log(doc);
+                // }
+                );
                 break;
             case '4':
                 Wine.updateOne({ _id: idWine }, {
                     "$set": { "rating.4": valRating }
-                }, { new: true }, (err, doc) => {
-                    if (err) {
-                        console.log("error " + err)
-                    }
-                    console.log(doc);
-                });
+                }, { new: true }, callback
+                // (err, doc) => {
+                //     if (err) {
+                //         console.log("error " + err)
+                //     }
+                //     console.log(doc);
+                // }
+                
+                );
                 break;
             case '5':
                 Wine.updateOne({ _id: idWine }, {
                     "$set": { "rating.5": valRating }
-                }, { new: true }, (err, doc) => {
-                    if (err) {
-                        console.log("error " + err)
-                    }
-                    console.log(doc);
-                });
+                }, { new: true }, callback
+                // (err, doc) => {
+                //     if (err) {
+                //         console.log("error " + err)
+                //     }
+                //     console.log(doc);
+                // }
+                );
                 break;
             default:
                 break;
@@ -102,8 +113,8 @@ module.exports.addRatingWine = function (idWine, idRating, idUser, callback) {
 
 
     // Wine.save(callback);
-    return Wine.findOne({ _id: idWine }, function (err, suc) {
-    });
+    //return Wine.findOne({ _id: idWine }, function (err, suc) {
+    //});
 
 }
 
