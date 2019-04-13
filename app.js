@@ -93,7 +93,6 @@ app.route('/api/wines/:id')
 
         Wine.addRatingWine(idWine, idRating, idUser, function(err, wine){
             if(err) throw err;
-            console.log('here')
             res.send(wine).end()
           });
     })
