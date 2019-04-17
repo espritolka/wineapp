@@ -243,3 +243,12 @@
 18:48:22 PUT /api/wines/5cae537cb567cf4c3842338e PostmanRuntime/7.3.0
 18:50:47 PUT /api/wines/5cae537cb567cf4c3842338e PostmanRuntime/7.3.0
 18:51:55 PUT /api/wines/5cae537cb567cf4c3842338e PostmanRuntime/7.3.0
+20:35:17 POST /login PostmanRuntime/7.3.0
+20:35:17 GET / PostmanRuntime/7.3.0
+21:12:23 POST /register PostmanRuntime/7.3.0
+21:14:8 POST /register PostmanRuntime/7.3.0
+23:44:39 GET / Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+23:45:13 GET / Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+23:45:13 GET /style.css Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+23:45:15 GET / Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+23:45:15 GET /style.css Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36

@@ -1,12 +1,27 @@
 var mongoose = require('mongoose');
-const bcrypt = require('bcrypt')
+//const bcrypt = require('bcrypt')
 var User = require('../users/user')
+var fs = require('fs');
 // User Schema
 var WineSchema = mongoose.Schema({
     name: {
         type: String,
         index: true,
         unique: true,
+    },  
+    country: {
+        type: String,
+        index: true,
+    },
+    color: {
+        type: String,
+    },
+    year: {
+        type: Date,
+    },
+    img: { 
+        data: Buffer,
+        contentType: String 
     },
     rating: {
         type: Map,

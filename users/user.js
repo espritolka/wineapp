@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
+var fs = require('fs');
 
 // User Schema
 var UserSchema = mongoose.Schema({
@@ -18,9 +19,16 @@ var UserSchema = mongoose.Schema({
   name: {
     type: String
   },
-  wines: {
-      type: Array
-  }
+  name: {
+    type: String
+  },
+  profile: {
+      type: String
+  },
+  img: { 
+      data: Buffer, 
+      contentType: String 
+    }
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);

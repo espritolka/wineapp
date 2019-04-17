@@ -11,6 +11,25 @@ const session = require('express-session')
 const RedisStore = require('connect-redis')(session)
 const jsonParser = express.json();
 const fs = require('fs');
+var multer = require('multer');
+//const path = require('path');
+//var upload = multer({ dest: 'uploads/' })
+//test
+var multer       = require('multer');
+
+var storage = multer.diskStorage({
+   destination: function (req, file, cb) {
+   cb(null, './uploads');
+},
+filename: function (req, file, cb) {
+   cb(null, file.originalname);
+}
+});
+
+var upload = multer({ storage: storage });
+//test
+
+
 var User = require('./users/user')
 var Wine = require('./wines/wine')
 
@@ -27,6 +46,7 @@ app.use(function (request, response, next) {
     fs.appendFile("server.log", data + "\n", function () { });
     next();
 });
+   
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -49,8 +69,13 @@ app.use(cookieParser());
   app.use(passport.initialize())
   app.use(passport.session())
 
-app.get('/', passport.authenticationMiddleware(), function(req,res){
-res.send("MAIN")
+// app.get('/', passport.authenticationMiddleware(), function(req,res){
+//     res.sendFile(path.resolve(__dirname, 'index.html'));
+// //res.send("MAIN")
+// })
+
+app.get('/', function(req,res){
+    res.sendFile(__dirname + '/public/index.html');
 })
 
 app.get('/api/users',  passport.authenticationMiddleware(),function(req, res){
@@ -67,6 +92,16 @@ app.route('/api/users/:id',  passport.authenticationMiddleware())
     .delete(function(req,res){
         res.send("i'm delete");
     });
+
+    //test
+ app.post('/profile', upload.single('avatar'), function (req, res, next) {
+    var img = fs.readFileSync(req.file.path);
+
+        // req.file is the `avatar` file
+        // req.body will hold the text fields, if there were any
+      })
+    //test  
+
 app.get('/api/wines', function(req, res){
     res.send("WinesList")
 });
@@ -118,9 +153,6 @@ app.route('/api/reiting')
     
       mongoose.connect("mongodb://localhost:27017/wineappsdb", { useNewUrlParser: true }, function(err){
     if(err) return console.log(err);
-    // app.listen(3000, function(){
-    //     console.log("Сервер ожидает подключения...");
-    // });
 });
 mongoose.set('useCreateIndex', true);
 // Register User
