@@ -73,10 +73,13 @@ app.use(cookieParser());
 //     res.sendFile(path.resolve(__dirname, 'index.html'));
 // //res.send("MAIN")
 // })
+app.use(express.static('public'));
 
 app.get('/', function(req,res){
     res.sendFile(__dirname + '/public/index.html');
 })
+
+
 
 app.get('/api/users',  passport.authenticationMiddleware(),function(req, res){
     res.send("UsersList")
@@ -134,7 +137,7 @@ app.route('/api/wines/:id')
     .delete(function(req,res){
         res.send("i'm delete");
     })    
-app.route('/api/reiting')
+app.route('/api/rating')
     .get(function(req,res){
         res.send("Top");
     })
