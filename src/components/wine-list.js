@@ -1,6 +1,11 @@
 import React from 'react';
+import axios from 'axios'
 
 class WineList extends React.Component {
+
+  getWines = () => {
+
+  }
     render() {
       return (
       <ul className="wine-list">

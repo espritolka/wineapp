@@ -10,8 +10,8 @@ class MainLayout extends React.Component {
         <header className="primary-header"></header>
         <aside className="primary-aside">
           <ul>
-            <li><Link to="/" activeClassName="active">Home</Link></li>
-            <li><Link to="/users" activeClassName="active">Users</Link></li>
+            <li><Link color="inherit" to="/" activeClassName="active">Home</Link></li>
+            <li><Link color="inherit" to="/users" activeClassName="active">Users</Link></li>
             {/* <li><Link to="/wines" activeClassName="active">Wines</Link></li> */}
           </ul>
         </aside>

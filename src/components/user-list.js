@@ -1,16 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios'
+//import Link from '@material-ui/core'
 
 class UserList extends React.Component {
+state={
+  users: []
+}
+
+componentDidMount() {
+  this.getData();
+}
+  getData =()=>{
+    axios.get('/api/users').then((res)=>{
+      console.log(res.data)
+      this.setState({'users': res.data })
+    }
+    )
+  }
   render() {
+    console.log(this.state)
     return (
       <ul className="user-list">
-        <li><Link to="users/2">Michael</Link></li>
-        <li><Link to="users/1">Ryan</Link></li>
-        <li><Link to="users/3">Dan</Link></li>
-        <li><Link to="users/4">Matt</Link></li>
-        <li><Link to="users/5">Tobias</Link></li>
-        <li><Link to="users/6">Sebastian</Link></li>
+      {this.state.users.map((user, key)=>{
+        return (<li key ={key}><Link to={'users/' + user._id}>{user.username}</Link></li>)
+      })}
+
       </ul>
     );
   }

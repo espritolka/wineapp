@@ -79,18 +79,25 @@ app.get('/', function(req,res){
     res.sendFile(__dirname + '/public/index.html');
 })
 
-
-
-app.get('/api/users',  passport.authenticationMiddleware(),function(req, res){
-    res.send("UsersList")
+//app.get('/api/users',  passport.authenticationMiddleware(),function(req, res){
+app.get('/api/users',function(req, res){
+   User.getUsers(function(err, users){
+    res.send(users)
+   })
+   
 })
 app.route('/api/users/:id',  passport.authenticationMiddleware())
     .get(function(req,res){
         var id = req.params.id
-        res.send(id);
+        User.getUserById(id, function(err, user){
+            res.send(user);
+        })
+       
     })
     .put(function(req,res){
-        res.send("i'm put");
+        User.updateUserById(req.params.id, req.body, function(err, user){
+            res.send(user);
+        })
     })
     .delete(function(req,res){
         res.send("i'm delete");

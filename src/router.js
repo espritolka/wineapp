@@ -15,6 +15,7 @@ import App from './components/app';
 import UserList from './components/user-list';
 import UserProfile from './components/user-profile';
 import WineList from './components/wine-list';
+import Register from './components/Register'
 
 export default (
   <Router history={history}>
@@ -30,18 +31,12 @@ export default (
         </Route>
         <Route path="/users/:userId" component={UserProfile} />
         </Switch>
-
+        <Route path="/register" component={Register} />
         <Switch>
-  
+    
        
         </Switch>
      
-
-      {/* <Route path="widgets">
-        <Route component={SearchLayout}>
-          <Route component={WidgetList} />
-        </Route>
-      </Route> */}
 
     </Route>
    

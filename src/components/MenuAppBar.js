@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 //import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
+//import Link from '@material-ui/core/Link';
 
 const styles = theme =>  ({
   root: {
@@ -27,6 +28,9 @@ const styles = theme =>  ({
   input: {
     display: 'none',
   },
+  link: {
+    display: 'flex',
+  }
 });
 
 function ButtonAppBar(props) {
@@ -39,9 +43,10 @@ function ButtonAppBar(props) {
             <MenuIcon />
           </IconButton> */}
           <Typography variant="title" color="inherit" className={classes.grow}>
-          <Link to="/" >WineApp</Link>
+          <Link  to="/" >WineApp</Link>
           </Typography>
-          <Button color='inherit'><Link to="/users" >Users</Link></Button>
+          <Button ><Link to="/users" >Users</Link></Button>
+          <Button color="inherit"><Link to="/register" >Registration</Link></Button>
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
