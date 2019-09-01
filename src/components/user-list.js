@@ -12,7 +12,7 @@ componentDidMount() {
   this.getData();
 }
   getData =()=>{
-    axios.get('/api/users').then((res)=>{
+    axios.get('/api/users').then((res)=>{ 
       console.log(res.data)
       this.setState({'users': res.data })
     }

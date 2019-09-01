@@ -15,15 +15,15 @@ var multer = require('multer');
 //const path = require('path');
 //var upload = multer({ dest: 'uploads/' })
 //test
-var multer       = require('multer');
+var multer = require('multer');
 
 var storage = multer.diskStorage({
-   destination: function (req, file, cb) {
-   cb(null, './uploads');
-},
-filename: function (req, file, cb) {
-   cb(null, file.originalname);
-}
+    destination: function (req, file, cb) {
+        cb(null, './uploads');
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
 });
 
 var upload = multer({ storage: storage });
@@ -46,28 +46,28 @@ app.use(function (request, response, next) {
     fs.appendFile("server.log", data + "\n", function () { });
     next();
 });
-   
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-  
-  require('./auth').init(app)
 
-  redisStore = {
+require('./auth').init(app)
+
+redisStore = {
     url: 'redis://localhost:6379',
     secret: 'my-strong-secret'
-  }
-  app.use(session({
+}
+app.use(session({
     store: new RedisStore({
-      url: redisStore.url
+        url: redisStore.url
     }),
     secret: redisStore.secret,
     resave: false,
     saveUninitialized: false
-  }))
-  
-  app.use(passport.initialize())
-  app.use(passport.session())
+}))
+
+app.use(passport.initialize())
+app.use(passport.session())
 
 // app.get('/', passport.authenticationMiddleware(), function(req,res){
 //     res.sendFile(path.resolve(__dirname, 'index.html'));
@@ -75,139 +75,153 @@ app.use(cookieParser());
 // })
 app.use(express.static('public'));
 
-app.get('/', function(req,res){
+app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
 })
 
 //app.get('/api/users',  passport.authenticationMiddleware(),function(req, res){
-app.get('/api/users',function(req, res){
-   User.getUsers(function(err, users){
-    res.send(users)
-   })
-   
+app.get('/api/users', function (req, res) {
+    User.getUsers(function (err, users) {
+        res.send(users)
+    })
+
 })
-app.route('/api/users/:id',  passport.authenticationMiddleware())
-    .get(function(req,res){
+app.route('/api/users/:id', passport.authenticationMiddleware())
+    .get(function (req, res) {
         var id = req.params.id
-        User.getUserById(id, function(err, user){
+        User.getUserById(id, function (err, user) {
+            res.send({
+                username: user.username,
+                name: user.name,
+                email: user.email,
+                id: user._id
+            });
+        })
+
+    })
+    .put(function (req, res) {
+        User.updateUserById(req.params.id, req.body, function (err, user) {
             res.send(user);
         })
-       
     })
-    .put(function(req,res){
-        User.updateUserById(req.params.id, req.body, function(err, user){
-            res.send(user);
-        })
-    })
-    .delete(function(req,res){
+    .delete(function (req, res) {
         res.send("i'm delete");
     });
 
-    //test
- app.post('/profile', upload.single('avatar'), function (req, res, next) {
+//test
+app.post('/profile', upload.single('avatar'), function (req, res, next) {
     var img = fs.readFileSync(req.file.path);
 
-        // req.file is the `avatar` file
-        // req.body will hold the text fields, if there were any
-      })
-    //test  
+    // req.file is the `avatar` file
+    // req.body will hold the text fields, if there were any
+})
+//test  
 
-app.get('/api/wines', function(req, res){
+app.get('/api/wines', function (req, res) {
     res.send("WinesList")
 });
-app.post('/api/wines', function(req, res){
+app.post('/api/wines', function (req, res) {
     var newWine = new Wine({
         name: req.body.name,
-        rating: {'1': 0, '2': 0 , '3': 0, '4': 0, '5': 0}
-      });
-  
-      Wine.createWine(newWine, function(err, wine){
-        if(err) throw err;
+        rating: { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 }
+    });
+
+    Wine.createWine(newWine, function (err, wine) {
+        if (err) throw err;
         res.send(wine).end()
-      });
+    });
 });
 app.route('/api/wines/:id')
-    .get(function(req,res){
+    .get(function (req, res) {
         var id = req.params.id
         res.send(id);
     })
-    .put(function(req,res){
-       var idWine = req.params.id
-       var idUser = req.body.user
-       var idRating = req.body.num
+    .put(function (req, res) {
+        var idWine = req.params.id
+        var idUser = req.body.user
+        var idRating = req.body.num
 
-        Wine.addRatingWine(idWine, idRating, idUser, function(err, wine){
-            if(err) throw err;
+        Wine.addRatingWine(idWine, idRating, idUser, function (err, wine) {
+            if (err) throw err;
             res.send(wine).end()
-          });
+        });
     })
-    .delete(function(req,res){
+    .delete(function (req, res) {
         res.send("i'm delete");
-    })    
+    })
 app.route('/api/rating')
-    .get(function(req,res){
+    .get(function (req, res) {
         res.send("Top");
     })
-    .post(function(req,res){
-    var idWine= req.body.wine_id;
-    var idUser= req.body.user_id;
-    var num = req.body.num;    
+    .post(function (req, res) {
+        var idWine = req.body.wine_id;
+        var idUser = req.body.user_id;
+        var num = req.body.num;
         res.send('Вино: ${idWine} - Пользователь: ${idUser} - ${num}');
     })
-    .put(function(req,res){
+    .put(function (req, res) {
         res.send("i'm put");
     })
-    .delete(function(req,res){
+    .delete(function (req, res) {
         res.send("i'm delete");
-    })     
-    
-      mongoose.connect("mongodb://localhost:27017/wineappsdb", { useNewUrlParser: true }, function(err){
-    if(err) return console.log(err);
+    })
+
+mongoose.connect("mongodb://localhost:27017/wineappsdb", { useNewUrlParser: true }, function (err) {
+    if (err) return console.log(err);
 });
 mongoose.set('useCreateIndex', true);
 // Register User
-app.post('/register', function(req, res){
+app.post('/register', function (req, res) {
     var password = req.body.password;
     var password2 = req.body.password2;
-  console.log(req.body)
-    if (password == password2){
-      var newUser = new User({
-        name: req.body.name,
-        email: req.body.email,
-        username: req.body.username,
-        password: req.body.password
-      });
-  
-      User.createUser(newUser, function(err, user){
-        if(err) throw err;
-        res.send(user).end()
-      });
-    } else{
-      res.status(500).send("{errors: \"Passwords don't match\"}").end()
+    console.log(req.body)
+    if (password == password2) {
+        var newUser = new User({
+            name: req.body.name,
+            email: req.body.email,
+            username: req.body.username,
+            password: req.body.password
+        });
+
+        User.createUser(newUser, function (err, user) {
+            if (err) throw err;
+            res.send(user).end()
+        });
+    } else {
+        res.status(500).send("{errors: \"Passwords don't match\"}").end()
     }
-  });
-  app.post('/login' ,
-  passport.authenticate('local', 
-  { successRedirect: '/',
-  failureRedirect: '/login' }),
-//  function(req,res){
- //   User.getUserByUsername(req.body.username)}
-//   function(req, res) {
-//     res.send(req.user);
-//   }
+});
+app.post('/login',
+    //   passport.authenticate('local', 
+    //   { successRedirect: '/',
+    //   failureRedirect: '/login' }),
+    //  function(req,res){
+    //    User.getUserByUsername(req.body.username,
+    //   function(req, res) {
+    //     res.send(req.user);
+    //   })}
+    passport.authenticate('local'),
+    function (req, res) {
+        let user = ''
+        User.getUserByUsername(req.body.username,
+            function (err, item) {
+                user = item._id
+                res.json({ message: "Success", username: req.user.username, id: user });
+            })
+    }
 );
 
-app.get('/login', function(req,res){
+app.get('/login', function (req, res) {
     res.send("fail")
 })
 // Endpoint to get current user
-app.get('/user', function(req, res){
-  res.send(req.user);
+app.get('/user', function (req, res) {
+    res.send(req.user);
 })
 
 
 // Endpoint to logout
-app.get('/logout', function(req, res){
-  req.logout();
-  res.send(null)
+app.get('/logout', function (req, res) {
+    req.logout();
+    res.send(null)
 });
