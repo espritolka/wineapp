@@ -1,6 +1,6 @@
 import React from 'react';
 //import { Router, Route, browserHistory, IndexRoute } from 'react-router';
-import { Router, Route, Link, NavLink, Switch } from "react-router-dom";
+import {  Route, Link, NavLink, Switch,  HashRouter as Router} from "react-router-dom";
 
 
 import { createBrowserHistory } from "history";
@@ -19,24 +19,27 @@ import Register from './components/Register'
 
 export default (
   <Router history={history}>
-    <div>
-
-      <App />
-      <Route component={MainLayout}>
-        <Route exact path="/" component={WineList} />
-        <Switch>
-          <Route exact path="/users" component={SearchLayout}>
-            {/* <Route component={UserList} /> */}
-            <UserList />
-          </Route>
-          <Route path="/users/:userId" component={UserProfile} />
+        <div>
+        
+       <App/>
+    <Route component={MainLayout}>
+      <Route exact path="/" component={WineList} />
+      <Switch>
+        <Route exact path="/users" component={SearchLayout}>
+          {/* <Route component={UserList} /> */}
+          <UserList/>
+        </Route>
+        <Route path="/users/:userId" component={UserProfile} />
         </Switch>
         <Route path="/register" component={Register} />
         <Switch>
-
+    
+       
         </Switch>
-      </Route>
+     
 
+    </Route>
+   
     </div>
   </Router>
 );

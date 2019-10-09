@@ -13,8 +13,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios'
+import avatar from '../avatar.jpg'
+import Avatar from '@material-ui/core/Avatar';
 //import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
+import { connect } from 'mongoose';
 //import Link from '@material-ui/core/Link';
 
 const styles = theme => ({
@@ -37,29 +40,47 @@ const styles = theme => ({
   },
   link: {
     display: 'flex',
-  }
+  },
+  bigAvatar: {
+    margin: 10,
+    width: 60,
+    height: 60,
+  },
 });
 
 class ButtonAppBar extends React.Component {
-  state = {
+
+  constructor(props) {
+    super(props);
+  this.state = {
     open: false,
     openProfile: false,
     username: '',
+    email: '',
+    name: '',
     password: '',
     buttonName: 'Login',
-    userId: ''
+    userId: '',
+    userData: '',
   }
+};  
   handleClose = (name) => {
     this.setState({
       [name]: false
     })
+  }
+  getUserById = (id) => {
+  axios.get(`/api/users/${id}`).then((res)=>{
+    this.setState({userData: res.data,
+      email: res.data.email,
+      name: res.data.name,})
+  })
   }
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
   };
 
   auth = () => {
-    console.log('click')
     axios.post('/login', { username: this.state.username, password: this.state.password })
       .then((res) => {
         this.setState({
@@ -67,6 +88,7 @@ class ButtonAppBar extends React.Component {
           userId: res.data.id,
           buttonName: this.state.username
         })
+        this.getUserById(res.data.id)
       })
       .catch((error) => {
         console.log('auth error:', error)
@@ -80,6 +102,7 @@ class ButtonAppBar extends React.Component {
   }
 
   getElement = () => {
+    const { classes } = this.props;
     if (this.state.buttonName == 'Login') {
       return (
         <Dialog open={this.state.open} onClose={() => this.handleClose('open')} aria-labelledby="form-dialog-title">
@@ -126,6 +149,8 @@ class ButtonAppBar extends React.Component {
             <DialogContentText>
               Profile {this.state.username}
             </DialogContentText>
+            <Avatar alt="Remy Sharp" src={avatar} className={classes.bigAvatar} />
+
             <TextField
               autoFocus
               margin="dense"
@@ -134,6 +159,28 @@ class ButtonAppBar extends React.Component {
               onChange={this.handleChange('username')}
               label="Username"
               type="login"
+              fullWidth
+            />
+
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              value={this.state.name}
+              onChange={this.handleChange('name')}
+              label="Name"
+              type="text"
+              fullWidth
+            />
+            
+            <TextField
+              autoFocus
+              margin="dense"
+              id="email"
+              value={this.state.email}
+              onChange={this.handleChange('email')}
+              label="Email"
+              type="email"
               fullWidth
             />
           </DialogContent>
@@ -152,7 +199,6 @@ class ButtonAppBar extends React.Component {
   }
 
   render() {
-    console.log(document.cookie)
     const { classes } = this.props;
     return (
       <div className={classes.root}>
@@ -163,10 +209,10 @@ class ButtonAppBar extends React.Component {
             <MenuIcon />
           </IconButton> */}
             <Typography variant="title" color="inherit" className={classes.grow}>
-              <Link to="/" >WineApp</Link>
+              <Link to="/" className='active' >WineApp</Link>
             </Typography>
-            <Button ><Link to="/users" >Users</Link></Button>
-            <Button color="inherit"><Link to="/register" >Sign up</Link></Button>
+            <Button ><Link to="/users" className='active' >Users</Link></Button>
+            <Button color="inherit"><Link to="/register" className='active'>Sign up</Link></Button>
             <Button color="inherit" onClick={() => this.loginIn(this.state.buttonName == 'Login' ? 'open' : 'openProfile')}>
               {this.state.buttonName}</Button>
           </Toolbar>
